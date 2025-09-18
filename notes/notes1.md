@@ -60,6 +60,62 @@ If I deployed two EC2 instances, all the details about those instances should be
 So what it does is it compared this to your actual infrastructure (the state file) and from there it is able to decide what to do so if I added in an additional EC2 in my desired state file, then it would compared against the current state file and see there is two existing EC2 instances and I am trying to deploy an extra one. From there, the current state file will be updated to match my desired state file - so there will now be 3 EC2 instances now in the state file which is the blueprint of my infrastructure. 
 
 
+Terraform Import
+---
+Terraform import comes into play when you've already deployed a resource in AWS without using terraform. 
+
+Terraform import is a powerful command that allows you to take existing resources in your cloud environmment, and bring them under your Terraform management. This is a essential command when you want to integrate Terraform into an existing infrastructure setup without having to recreate each resource from scratch. 
+
+**How this works**
+
+Firstly, Terraform doesn't do all the magic for us if we run just the import command. A resource block is still needed with the relevant information and then we can run the import command.
+
+Here I created a EC2 instance called import manually and have added that in the resource block with the correct AMI, instance type and name.
+
+<img width="613" height="218" alt="image" src="https://github.com/user-attachments/assets/a98e51b5-ffb9-4e90-bd1d-f3317017d2dc" />
+
+Then after saving the file I ran the below command with the correct instance id added at the end.
+
+<img width="898" height="208" alt="image" src="https://github.com/user-attachments/assets/c81439de-cee1-45cd-a371-2baf91c9aafb" />
+
+
+After running a terraform plan against that, the below returned.
+
+<img width="1013" height="443" alt="image" src="https://github.com/user-attachments/assets/d2dd5379-6d59-47d3-b921-e8bd062c8ce7" />
+
+Here terraform is telling me that the imported ec2 instance has a Name tag = "import" in AWS and my terraform configuration does not define any tags block. So running a plan here shows that the desired state doesn't match the current state and when we do an import we want to make sure the desired and current state is exactly the same without having to apply any changes.
+
+I also needed to add in a "user_data_replace_on_change = false" in the resource block for that imported EC2. 
+
+Here is the updated resource for the imported instance. 
+
+<img width="418" height="180" alt="image" src="https://github.com/user-attachments/assets/7bb9429a-5e50-4c4c-a6d0-a984a9982f23" />
+
+Now running a plan against that will return nothing as the desired state matches the current state - the terraform config file matches what's in the infrastructure currently and this is our desired result when doing an import of manually added instances. 
+
+
+Local state and Remote state
+---
+
+A local state file is created by default and stored locally on your machine when the terraform apply command is ran. The local state file setup is ideal for small projects as there is no additional configuration requred to store the state file locally and it keeps everythings contained and simple. 
+
+Remote state files address many of the challenges that come with local state files  by storing the state in a central, secure location that allows for a collaborative approach.
+
+By storing state files remotely, multiple team members can access and update the same infrastructure state without risking conflicts or inconsistencies. Also, remote backends like AWS S3 buckets, Terraform cloud offer state locking which prevents users from making changes at the same time which reduces state corruption. 
+
+Another benefit for remote state files is that they have automatic backups and security. Remote backends can automaticaly backup the state file and apply encryption which ensures the state file to be secure and recoverable.
+
+Here I have already manually created the the S3 bucket where I'll be remotely storing my state file and I've now referenced that in my provider.tf file with the Bucket name, what I'll be saving the bucket as, and the region in which this bucket is deployed.
+
+<img width="498" height="362" alt="image" src="https://github.com/user-attachments/assets/dd9150c6-0fc5-492c-bac1-561725ab955c" />
+
+After saving that file and running terraform init, the below is returned. This shows that the provider file is setup and our IAM access is correct in order to deploy a object within that S3 bucket. 
+
+A 403 error would be returned if we didn't have the correct permissions for that AWS account.
+
+<img width="653" height="299" alt="image" src="https://github.com/user-attachments/assets/d464f3a4-a38a-4788-b527-fffc44feaa27" />
+
+
 Terraform Providers
 ---
 
