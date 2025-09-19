@@ -116,6 +116,36 @@ A 403 error would be returned if we didn't have the correct permissions for that
 <img width="653" height="299" alt="image" src="https://github.com/user-attachments/assets/d464f3a4-a38a-4788-b527-fffc44feaa27" />
 
 
+Input Variabels
+---
+Input variables in Terraform a
+
+Here we can see that a variable has been created called instance_type which is a string.
+<img width="520" height="193" alt="image" src="https://github.com/user-attachments/assets/09a0f07f-09dc-45e2-8625-3fba2b6b6157" />
+
+Then we reference the variable by doing a var.instance_type
+<img width="1364" height="402" alt="image" src="https://github.com/user-attachments/assets/bb407e10-b774-4b7e-99fb-86c826b8b6fd" />
+
+Now after running terraform plan we can see it expects a value. 
+<img width="1609" height="264" alt="image" src="https://github.com/user-attachments/assets/46696f5e-c5c7-4ebd-8cc1-6dfa90aac3ab" />
+
+Or we can set a default tag within the variable for it to automatically take that as the result. 
+<img width="322" height="36" alt="image" src="https://github.com/user-attachments/assets/167bd0ab-3c3b-49d1-b68d-315bb68a90cd" />
+
+
+Local Variables
+---
+Local variables in Terraform are for value you set or calculate once and then resuse in multiple places in your terraform configuration. THey are mainly there to avoid repeating yourself and to keep your terraform configuration **DRY**.
+
+So in a case where you want to keep the AMI id the same throughout your infrastructure, you can set a local variable and reference that throughout your configuration. 
+
+Here we set a local variable for instance_ami which will be the default machine image we want to use
+<img width="391" height="94" alt="image" src="https://github.com/user-attachments/assets/3b51773d-0000-4bb9-a511-56f547cd6fa6" />
+
+Now in our EC2 resource block we reference that local variable by doing a local.instance_ami to call it.
+<img width="425" height="136" alt="image" src="https://github.com/user-attachments/assets/1dfe28f2-3dea-496b-9440-ee1b4e3a720c" />
+
+
 
 
 Terraform Providers
