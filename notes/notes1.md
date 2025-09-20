@@ -197,6 +197,22 @@ resource "aws_instance" "this" {
   instance_type = var.instance_type
 }
 ```
+**Key thing to note when it comes to calling a child module is that it is called in the root directory meaning you could have a main.tf file in root and call it within that file as the below**
+
+```
+project/
+├── main.tf          # ec2 module would be called here
+└── modules/
+    └── ec2/         # child module
+        ├── ec2.tf # where the module is defined e.g. your ec2 configuration
+        ├── variables.tf 
+```
+
+The main.tf file in root:
+<img width="273" height="105" alt="image" src="https://github.com/user-attachments/assets/b5787df8-890f-45a3-a245-8eb08816e229" />
+
+The ec2.tf file in module/ec2/:
+<img width="552" height="325" alt="image" src="https://github.com/user-attachments/assets/aa8c6d95-bb30-4387-8aff-e2c60020f6cc" />
 
 
 Terraform Providers
