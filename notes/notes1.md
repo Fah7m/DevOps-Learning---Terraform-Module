@@ -146,6 +146,57 @@ Now in our EC2 resource block we reference that local variable by doing a local.
 <img width="425" height="136" alt="image" src="https://github.com/user-attachments/assets/1dfe28f2-3dea-496b-9440-ee1b4e3a720c" />
 
 
+Output Variables
+---
+THe output variable in Terraform is used to display a desired result when running a terraform apply e.g. I can have a output variable displaying what the instance id is, or the instance ip, or the region the instance is deployed. 
+
+Here I have created an output block and referenced a EC2 instance I have created earlier by using it's variable name and adding ID to display the instance ID
+<img width="393" height="92" alt="image" src="https://github.com/user-attachments/assets/2d0a95e9-56be-4214-8137-d13e7dfa3b04" />
+
+Here is the EC2 instance that was created I am referencing in that output block named "this"
+<img width="420" height="97" alt="image" src="https://github.com/user-attachments/assets/d11788d7-c8cc-462a-89fd-8ad3b3dd9f78" />
+
+Now when running a terraform plan and apply there should be no changes as I have created that instance already but am now just asking terraform to display a output in the terminal.
+<img width="1172" height="198" alt="image" src="https://github.com/user-attachments/assets/ee3ed2d1-8b5c-4a5c-bd26-48f70573a92d" />
+
+Terraform apply:
+<img width="1017" height="350" alt="image" src="https://github.com/user-attachments/assets/b77b58ab-d8d1-4e1e-8a9d-39cc3ed41d00" />
+
+
+Terraform Modules
+---
+Terraform Modules are a collection of tf files in a single directory. Using terraform modules is a way to keep your terraform configuration resuable and consistent e.g. I have used a module already in my terraform setup called a root module which basically is the directory where I can a terraform init/plan/apply and this is where I was describing my ec2.tf variables.tf and terraform.tfvar.
+
+A chold module is anything I split off and call whereas a root module is where I run directory. In simple terms the root module is where I initially run my terraform commands (init/plan/apply) and the child module is a subdirectory within my project folder or a remote source like github or terraform registry which contains its own tf files. This child module is then called within my root module using a module block like below.
+
+The folder structure would be like the below:
+```
+project/
+├── main.tf          # root module
+├── variables.tf     # root module vars
+└── modules/
+    └── ec2/         # child module
+        ├── main.tf
+        ├── variables.tf
+        └── outputs.tf
+```
+
+And it would be called in my main.tf file in the root module as the below:
+```
+module "ec2" {
+  source        = "./modules/ec2"
+  instance_type = "t3.micro"
+  region        = var.region
+}
+```
+
+Then within the child module directory it would be defined as this
+```
+resource "aws_instance" "this" {
+  ami           = "ami-123456"
+  instance_type = var.instance_type
+}
+```
 
 
 Terraform Providers
