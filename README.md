@@ -32,3 +32,4 @@ If you also have a value in a *.tfvars file, the tfvars value will override the 
 If you pass something with -var on the CLI, that will override both.
 A variables.tf file is used to declare variables and the tfvar file can be used to assign values to those declared variables instead of having to 
 
+<img width="563" height="313" alt="image" src="https://github.com/user-attachments/assets/4b20ee9f-3a3d-4126-b473-bc634070e328" />
