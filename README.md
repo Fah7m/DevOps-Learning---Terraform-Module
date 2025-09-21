@@ -94,3 +94,16 @@ A variables.tf file is used to declare variables and the tfvar file can be used 
 
 <img width="1863" height="917" alt="image" src="https://github.com/user-attachments/assets/86486633-24fa-44ff-b408-17d1970aa8a8" />
 
+
+
+For the modules to stay reusable we only pass values in the .tfvar files and only define the variables in the modules.
+
+ChatGPT putting my answer in notes:
+
+<img width="702" height="800" alt="image" src="https://github.com/user-attachments/assets/f4d0a09e-4087-433e-a3e1-8dca95c19a50" />
+
+<img width="687" height="612" alt="image" src="https://github.com/user-attachments/assets/91728040-f35d-4a59-8f37-d6656687c488" />
+
+<img width="675" height="829" alt="image" src="https://github.com/user-attachments/assets/e61d2c91-b1b1-4adc-ab1a-4c5b0c744154" />
+
+<img width="685" height="200" alt="image" src="https://github.com/user-attachments/assets/d7e66456-0d18-415f-8ce7-a9bc27a1236e" />
